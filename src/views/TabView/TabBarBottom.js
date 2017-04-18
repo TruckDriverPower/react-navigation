@@ -10,10 +10,8 @@ import {
 import TabBarIcon from './TabBarIcon';
 
 import type {
-  NavigationAction,
   NavigationRoute,
   NavigationState,
-  NavigationScreenProp,
   Style,
 } from '../../TypeDefinition';
 
@@ -35,7 +33,7 @@ type Props = {
   inactiveTintColor: string;
   inactiveBackgroundColor: string;
   position: Animated.Value;
-  navigation: NavigationScreenProp<NavigationState, NavigationAction>,
+  navigationState: NavigationState;
   jumpToIndex: (index: number) => void;
   getLabel: (scene: TabScene) => ?(React.Element<*> | string);
   renderIcon: (scene: TabScene) => React.Element<*>;
@@ -62,7 +60,7 @@ export default class TabBarBottom extends PureComponent<DefaultProps, Props, voi
   _renderLabel = (scene: TabScene) => {
     const {
       position,
-      navigation,
+      navigationState,
       activeTintColor,
       inactiveTintColor,
       labelStyle,
@@ -72,7 +70,7 @@ export default class TabBarBottom extends PureComponent<DefaultProps, Props, voi
       return null;
     }
     const { index } = scene;
-    const { routes } = navigation.state;
+    const { routes } = navigationState;
     // Prepend '-1', so there are always at least 2 items in inputRange
     const inputRange = [-1, ...routes.map((x: *, i: number) => i)];
     const outputRange = inputRange.map((inputIndex: number) =>
@@ -101,7 +99,7 @@ export default class TabBarBottom extends PureComponent<DefaultProps, Props, voi
   _renderIcon = (scene: TabScene) => {
     const {
       position,
-      navigation,
+      navigationState,
       activeTintColor,
       inactiveTintColor,
       renderIcon,
@@ -113,7 +111,7 @@ export default class TabBarBottom extends PureComponent<DefaultProps, Props, voi
     return (
       <TabBarIcon
         position={position}
-        navigation={navigation}
+        navigationState={navigationState}
         activeTintColor={activeTintColor}
         inactiveTintColor={inactiveTintColor}
         renderIcon={renderIcon}
@@ -126,19 +124,19 @@ export default class TabBarBottom extends PureComponent<DefaultProps, Props, voi
   render() {
     const {
       position,
-      navigation,
+      navigationState,
       jumpToIndex,
       activeBackgroundColor,
       inactiveBackgroundColor,
       style,
     } = this.props;
-    const { routes } = navigation.state;
+    const { routes } = navigationState;
     // Prepend '-1', so there are always at least 2 items in inputRange
     const inputRange = [-1, ...routes.map((x: *, i: number) => i)];
     return (
       <View style={[styles.tabBar, style]}>
-        {routes.map((route: NavigationRoute, index: number) => {
-          const focused = index === navigation.state.index;
+        {navigationState.routes.map((route: NavigationRoute, index: number) => {
+          const focused = index === navigationState.index;
           const scene = { route, index, focused };
           const outputRange = inputRange.map((inputIndex: number) =>
             (inputIndex === index ? activeBackgroundColor : inactiveBackgroundColor)

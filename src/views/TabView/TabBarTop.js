@@ -9,9 +9,8 @@ import { TabBar } from 'react-native-tab-view';
 import TabBarIcon from './TabBarIcon';
 
 import type {
-  NavigationAction,
-  NavigationScreenProp,
   NavigationState,
+  NavigationRoute,
   Style,
 } from '../../TypeDefinition';
 
@@ -34,11 +33,10 @@ type Props = {
   showLabel: boolean;
   upperCaseLabel: boolean;
   position: Animated.Value;
-  navigation: NavigationScreenProp<NavigationState, NavigationAction>;
+  navigationState: NavigationState;
   getLabel: (scene: TabScene) => ?(React.Element<*> | string);
   renderIcon: (scene: TabScene) => React.Element<*>;
   labelStyle?: Style;
-  iconStyle?: Style;
 };
 
 export default class TabBarTop extends PureComponent<DefaultProps, Props, void> {
@@ -56,7 +54,7 @@ export default class TabBarTop extends PureComponent<DefaultProps, Props, void> 
   _renderLabel = (scene: TabScene) => {
     const {
       position,
-      navigation,
+      navigationState,
       activeTintColor,
       inactiveTintColor,
       showLabel,
@@ -67,7 +65,7 @@ export default class TabBarTop extends PureComponent<DefaultProps, Props, void> 
       return null;
     }
     const { index } = scene;
-    const { routes } = navigation.state;
+    const { routes } = navigationState;
     // Prepend '-1', so there are always at least 2 items in inputRange
     const inputRange = [-1, ...routes.map((x: *, i: number) => i)];
     const outputRange = inputRange.map((inputIndex: number) =>
@@ -96,12 +94,11 @@ export default class TabBarTop extends PureComponent<DefaultProps, Props, void> 
   _renderIcon = (scene: TabScene) => {
     const {
       position,
-      navigation,
+      navigationState,
       activeTintColor,
       inactiveTintColor,
       renderIcon,
       showIcon,
-      iconStyle,
     } = this.props;
     if (showIcon === false) {
       return null;
@@ -109,12 +106,12 @@ export default class TabBarTop extends PureComponent<DefaultProps, Props, void> 
     return (
       <TabBarIcon
         position={position}
-        navigation={navigation}
+        navigationState={navigationState}
         activeTintColor={activeTintColor}
         inactiveTintColor={inactiveTintColor}
         renderIcon={renderIcon}
         scene={scene}
-        style={[styles.icon, iconStyle]}
+        style={styles.icon}
       />
     );
   };

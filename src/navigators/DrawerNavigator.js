@@ -11,7 +11,6 @@ import createNavigationContainer from '../createNavigationContainer';
 import TabRouter from '../routers/TabRouter';
 import DrawerScreen from '../views/Drawer/DrawerScreen';
 import DrawerView from '../views/Drawer/DrawerView';
-import NavigatorTypes from './NavigatorTypes';
 
 import type { DrawerViewConfig } from '../views/Drawer/DrawerView';
 import type {
@@ -51,7 +50,7 @@ const DrawerNavigator = (
   const contentRouter = TabRouter(routeConfigs, tabsConfig);
   const drawerRouter = TabRouter({
     DrawerClose: {
-      screen: createNavigator(contentRouter, routeConfigs, config, NavigatorTypes.DRAWER)((props: *) =>
+      screen: createNavigator(contentRouter)((props: *) =>
         <DrawerScreen {...props} />
       ),
     },
@@ -61,7 +60,7 @@ const DrawerNavigator = (
   }, {
     initialRouteName: 'DrawerClose',
   });
-  return createNavigationContainer(createNavigator(drawerRouter, routeConfigs, config, NavigatorTypes.DRAWER)((props: *) =>
+  return createNavigationContainer(createNavigator(drawerRouter)((props: *) =>
     <DrawerView
       {...props}
       drawerWidth={drawerWidth}

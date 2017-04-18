@@ -18,7 +18,7 @@ type Props = {
 };
 
 const HeaderTitle = ({ style, ...rest }: Props) => (
-  <Text numberOfLines={1} {...rest} style={[styles.title, style]} accessibilityTraits="header" />
+  <Text numberOfLines={1} {...rest} style={[styles.title, style]} />
 );
 
 const styles = StyleSheet.create({
@@ -30,5 +30,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
 });
+
+HeaderTitle.propTypes = {
+  style: Text.propTypes.style,
+};
 
 export default HeaderTitle;

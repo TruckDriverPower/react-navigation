@@ -3,9 +3,8 @@
 import React from 'react';
 import createNavigationContainer from '../createNavigationContainer';
 import createNavigator from './createNavigator';
-import CardStackTransitioner from '../views/CardStackTransitioner';
+import CardStack from '../views/CardStack';
 import StackRouter from '../routers/StackRouter';
-import NavigatorTypes from './NavigatorTypes';
 
 import type {
   NavigationContainerConfig,
@@ -40,8 +39,8 @@ export default (routeConfigMap: NavigationRouteConfigMap, stackConfig: StackNavi
     navigationOptions,
   };
   const router = StackRouter(routeConfigMap, stackRouterConfig);
-  return createNavigationContainer(createNavigator(router, routeConfigMap, stackConfig, NavigatorTypes.STACK)(props => (
-    <CardStackTransitioner
+  return createNavigationContainer(createNavigator(router)(props => (
+    <CardStack
       {...props}
       headerComponent={headerComponent}
       headerMode={headerMode}
